@@ -1,0 +1,12 @@
+{
+  "appId": "br.com.arraial.guardioes",
+  "appName": "Guardiões do Arraial",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#1b2432"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

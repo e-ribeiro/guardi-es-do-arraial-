@@ -1,0 +1,48 @@
+# Ambiente de build Android + Node para projetos Capacitor.
+# Funciona com Podman ou Docker, em Linux, WSL2 (Windows) ou Podman Desktop (macOS).
+#
+#   podman build -t arraial-build -f dev-env/Containerfile dev-env
+#   podman run --rm -it -v "$PWD:/work" -v arraial-gradle:/root/.gradle arraial-build
+#
+FROM docker.io/library/ubuntu:24.04
+
+ARG CMDLINE_TOOLS=15859902
+ARG PLATFORM=36
+ARG BUILD_TOOLS=36.0.0
+ARG NODE_MAJOR=22
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    ANDROID_HOME=/opt/android-sdk \
+    ANDROID_SDK_ROOT=/opt/android-sdk \
+    JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+    GRADLE_USER_HOME=/root/.gradle \
+    GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates curl unzip zip git openjdk-17-jdk-headless \
+      python3 bash && \
+    rm -rf /var/lib/apt/lists/*
+
+# Node (necessario para o Capacitor CLI)
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Android SDK: so linha de comando, sem Android Studio
+RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && cd ${ANDROID_HOME}/cmdline-tools && \
+    curl -fsSL -o tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${CMDLINE_TOOLS}_latest.zip && \
+    unzip -q tools.zip && rm tools.zip && mv cmdline-tools latest
+
+ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
+
+RUN yes | sdkmanager --licenses >/dev/null && \
+    sdkmanager "platform-tools" "platforms;android-${PLATFORM}" "build-tools;${BUILD_TOOLS}" && \
+    rm -rf ${ANDROID_HOME}/.downloadIntermediates
+
+WORKDIR /work
+COPY build.sh /usr/local/bin/build-apk
+RUN chmod +x /usr/local/bin/build-apk
+
+# Sem argumentos: compila o APK de debug do projeto montado em /work.
+CMD ["build-apk"]
