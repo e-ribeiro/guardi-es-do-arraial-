@@ -7,7 +7,7 @@
 #    (ou copie o arquivo para a pasta Downloads e rode: bash ~/storage/downloads/termux-setup.sh)
 # 3. Depois, para compilar:  ubuntu-build /caminho/do/projeto
 #
-# O que faz: instala Ubuntu via proot-distro, JDK 17, Node, o Android SDK de linha de comando
+# O que faz: instala Ubuntu via proot-distro, JDK 21, Node, o Android SDK de linha de comando
 # e um aapt2 compilado para arm64 (o do Google e so x86_64). Gradle, sdkmanager, d8 e apksigner
 # sao Java e rodam em arm64 sem ajuste.
 set -euo pipefail
@@ -30,7 +30,7 @@ echo "== Dentro do Ubuntu: JDK, Node, Android SDK"
 proot-distro login ubuntu -- bash -euo pipefail -c "
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl unzip zip git openjdk-17-jdk-headless nodejs npm
+apt-get install -y --no-install-recommends ca-certificates curl unzip zip git openjdk-21-jdk-headless nodejs npm
 export ANDROID_HOME=/opt/android-sdk
 mkdir -p \$ANDROID_HOME/cmdline-tools
 if [ ! -d \$ANDROID_HOME/cmdline-tools/latest ]; then
@@ -53,7 +53,7 @@ fi
 cat > /etc/profile.d/android.sh <<'EOF'
 export ANDROID_HOME=/opt/android-sdk
 export ANDROID_SDK_ROOT=/opt/android-sdk
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-arm64
 export PATH=\$PATH:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools
 export GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g'
 EOF

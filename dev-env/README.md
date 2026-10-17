@@ -18,7 +18,7 @@ Instale o Termux pelo F-Droid ou pelo GitHub (a versão da Play Store está aban
 bash ~/storage/downloads/termux-setup.sh
 ```
 
-O script instala Ubuntu dentro do Termux, JDK 17, Node, o SDK Android de linha de comando e um `aapt2` compilado para arm64 (o do Google só existe para x86_64; o Gradle passa a usar o arm64 pela propriedade `android.aapt2FromMavenOverride`). Depois:
+O script instala Ubuntu dentro do Termux, JDK 21, Node, o SDK Android de linha de comando e um `aapt2` compilado para arm64 (o do Google só existe para x86_64; o Gradle passa a usar o arm64 pela propriedade `android.aapt2FromMavenOverride`). Depois:
 
 ```
 ubuntu-build ~/storage/downloads/arraial-app
@@ -52,7 +52,7 @@ podman run --rm -it -v "$PWD:/work" -v arraial-gradle:/root/.gradle arraial-buil
 
 (Com Docker, troque `podman` por `docker`. No SELinux, acrescente `:Z` ao fim de `"$PWD:/work"`.)
 
-A imagem tem Ubuntu 24.04, JDK 17, Node 22, platform-tools, android-36 e build-tools 36.0.0, e pesa perto de 2 GB. O volume `arraial-gradle` guarda o cache do Gradle entre builds. O comando padrão compila o debug; para release:
+A imagem tem Ubuntu 24.04, JDK 21, Node 22, platform-tools, android-36 e build-tools 36.0.0, e pesa perto de 2 GB. O volume `arraial-gradle` guarda o cache do Gradle entre builds. O comando padrão compila o debug; para release:
 
 ```
 podman run --rm -it -v "$PWD:/work" -v arraial-gradle:/root/.gradle arraial-build build-apk release

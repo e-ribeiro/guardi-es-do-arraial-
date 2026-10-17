@@ -15,7 +15,7 @@ android/              projeto Android gerado pelo Capacitor
 
 ## Compilar o APK (Android)
 
-Requisitos: Android Studio (Ladybug ou mais novo), JDK 17 ou 21, Node 20 ou mais novo.
+Requisitos: Android Studio (Ladybug ou mais novo), JDK 21, Node 20 ou mais novo.
 
 1. `npm install`
 2. `npx cap sync android` (copia `www/` para dentro do projeto Android; repita depois de qualquer mudança no jogo)

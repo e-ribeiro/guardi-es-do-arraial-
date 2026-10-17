@@ -15,12 +15,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     ANDROID_HOME=/opt/android-sdk \
     ANDROID_SDK_ROOT=/opt/android-sdk \
-    JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+    JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 \
     GRADLE_USER_HOME=/root/.gradle \
     GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl unzip zip git openjdk-17-jdk-headless \
+      ca-certificates curl unzip zip git openjdk-21-jdk-headless \
       python3 bash && \
     rm -rf /var/lib/apt/lists/*
 
